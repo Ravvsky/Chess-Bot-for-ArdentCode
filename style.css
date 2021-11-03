@@ -1,0 +1,38 @@
+body{
+    background: #312e2b;
+}
+#board1{
+    margin: 12.5% auto 0 auto;
+    border: darkgray 2px solid;
+    width: 500px;
+}
+
+#gameover{
+    background: rgb(58, 58, 58);
+    color: white;
+    width: 300px;
+    height: 130px;
+    font-family: sans-serif;
+    text-align: center;
+    padding: 20px 0;
+    visibility: hidden;
+    border-radius: 5px;
+    position: absolute;
+    top: 30vh;
+    left: 38.5vw;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+#new-game{
+    margin: 3vh auto 0 auto;
+    padding: 15px;
+    font-size: 1.3rem;
+    width: 500px;
+    display: block;
+    background: rgb(48, 200, 48);
+    border: 0;
+    color: rgb(255, 255, 255);
+}
+#new-game:hover{
+    background: rgb(20, 158, 20);
+
+}
