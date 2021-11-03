@@ -17,7 +17,6 @@ var init = function () {
             return 'snapback'
         }
 
-
         //Legal pawn moves
         if (piece == 'wP') {
             if (Number(source[1]) + 1 != target[1]) {
@@ -28,11 +27,11 @@ var init = function () {
             var leftDiagonal = (String.fromCharCode(diagonalPosition - 1) + (Number(source[1]) + 1));
 
 
-            //blokda poruszania się po skosie jeśli nie ma bicia
+            //Cancel move if pawn can't capture on diagonal
             if ((target == rightDiagonal && board.position()[rightDiagonal] == undefined) || (target == leftDiagonal && board.position()[leftDiagonal] == undefined)) {
                 return 'snapback'
             }
-            //Blokada piona przed wejściem na zajęte pole na przeciwko 
+            //Cancel move forward if there is another piece 
             if (board.position()[target] != undefined && target[0] == source[0]) {
 
                 return 'snapback'
@@ -50,11 +49,11 @@ var init = function () {
             var leftDiagonal = (String.fromCharCode(diagonalPosition - 1) + (Number(source[1]) - 1));
 
 
-            //blokda poruszania się po skosie jeśli nie ma bicia
+            //Cancel move if pawn can't capture on diagonal
             if ((target == rightDiagonal && board.position()[rightDiagonal] == undefined) || (target == leftDiagonal && board.position()[leftDiagonal] == undefined)) {
                 return 'snapback'
             }
-            //Blokada piona przed wejściem na zajęte pole na przeciwko 
+            //Cancel move forward if there is another piece 
             if (board.position()[target] != undefined && target[0] == source[0]) {
 
                 return 'snapback'
@@ -103,8 +102,8 @@ var init = function () {
         if (!(/k/g).test(Chessboard.objToFen(newPos))) {
 
             config.draggable = false;
-            document.getElementById('gameover').style.visibility='visible'
-            document.getElementById('gameover').innerHTML+=`<h2 id='color'>White Won</h2>`
+            document.getElementById('gameover').style.visibility = 'visible'
+            document.getElementById('gameover').innerHTML += `<h2 id='color'>White Won</h2>`
 
             return
         }
@@ -147,10 +146,6 @@ var init = function () {
             return 'trash'
         }
 
-
-
-
-
         if (board.position()[source][0] == 'w') {
             lastMove = 'white'
         }
@@ -159,9 +154,6 @@ var init = function () {
         }
         position = board.position()
         makeRandomMove(source, piece, position, orientation, newPos)
-
-        //return makeRandomMove(source, piece, orientation)
-
     }
 
     function onDragStart(source, piece, position, orientation) {
@@ -170,30 +162,21 @@ var init = function () {
             (lastMove == 'white' && piece.search(/^b/) === -1)) {
             return false
         }
-
     }
 
     function makeRandomMove(source, piece, position, orientation, newPos) {
-
-
         var keys = Object.keys(position);
-
         var pickPiece = [];
+
         for (let i = 0; i < keys.length; i++) {
             if ((/^b/).test(position[keys[i]])) {
                 pickPiece.push([keys[i]].toString())
             }
         }
+
         var randomIdx = Math.floor(Math.random() * (pickPiece.length))
         target = pickPiece[randomIdx]
         piece = position[pickPiece[randomIdx]]
-        console.log(piece);
-        console.log(pickPiece[0]);
-        console.log(pickPiece);
-        console.log('target: ' + target);
-        console.log('piece: ' + piece);
-
-        console.log('-----------------------');
 
         var targetLetter = target.charCodeAt(0)
         var char = (a, b) => (String.fromCharCode(targetLetter + a)) + (Number(target[1]) + b);
@@ -211,26 +194,19 @@ var init = function () {
             }
         }
 
-        console.log('loop source: ' + possibleMoves);
-        console.log('loop source: ' + filteredMoves);
         if (filteredMoves.length == 0) {
             makeRandomMove(source, piece, position, orientation, newPos)
         }
-        else {
-
-            board.move(target + '-' + filteredMoves[0])
-
-        }
+        else {board.move(target + '-' + filteredMoves[0])}
 
         lastMove = 'black'
-
     }
     function onMoveEnd(oldPos, newPos) {
 
-        if(!(/K/g).test(Chessboard.objToFen(newPos))){
+        if (!(/K/g).test(Chessboard.objToFen(newPos))) {
             config.draggable = false;
-            document.getElementById('gameover').style.visibility='visible'
-            document.getElementById('gameover').innerHTML+=`<h2 id='color'>Black Won</h2>`
+            document.getElementById('gameover').style.visibility = 'visible'
+            document.getElementById('gameover').innerHTML += `<h2 id='color'>Black Won</h2>`
 
             return
         }
@@ -245,12 +221,12 @@ var init = function () {
             return 'trash'
         }
     }
-$('#new-game').on('click', ()=>{
-    board.position('3qk3/8/pppppppp/8/8/PPPPPPPP/8/3QK3 w - - 0 1')
-    config.draggable = true;
-    document.getElementById('color').remove()
-    document.getElementById('gameover').style.visibility='hidden'
-})
+    $('#new-game').on('click', () => {
+        board.position('3qk3/8/pppppppp/8/8/PPPPPPPP/8/3QK3 w - - 0 1')
+        config.draggable = true;
+        document.getElementById('color').remove()
+        document.getElementById('gameover').style.visibility = 'hidden'
+    })
 
-}; 
+};
 $(document).ready(init);
